@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <title>Article Details</title>
+</head>
+<body>
+    <h1>Article Details:</h1>
+    <br>
+    <a href="/articles">HOME</a>
+    <a href="/articles/new">Publish new article</a>
+    <br>
+    <br>
+    <h4 class="edit"><a href="/articles/<%=article.id%>/edit">EDIT</a>   <a href="/articles/<%=article.id%>/delete">DELETE</a></h4>
+    <br>
+    <h3>Article Title: <span class="bold">"<%=article.title %>"</span></h2> <br>
+    <h4>Article Description:</h4>
+    <p><span class="bold"><%=article.description %></span></p>
+    <br>
+    <h4>Article Author: <span class="bold">"<%=article.author %></span>"</h4> <br>
+    <h4><a href="/articles/<%=article.id%>/edit"><i class="far fa-edit"></i></a>   <a href="/articles/<%=article.id%>/delete"><i class="far fa-trash-alt"></i></a></h4>
+    <br>
+    <h5>Last updated: <%=article.updatedAt%></h5>
+    <p>Likes:  <span class="bold"> <%=article.likes %> </span> <a href="/articles/<%=article.id%>/like"><i class="far fa-thumbs-up"></i></a>  <a href="/articles/<%=article.id%>/dislike"><i class="far fa-thumbs-down"></i></a></p>
+
+    <span class="bold" >Tags: </span>
+    <% article.tags.forEach(a => { %>
+        <span class="tag"><%= a %></span>
+        <%}) %>
+    <br>
+
+    <form action="/articles/<%=article.id%>/comments" method="POST">
+        <textarea name="content" id="" cols="80" rows="5" placeholder="Add Comments here.."></textarea>
+        <input  class="inputAuthor" type="text" name="author" placeholder="Add author..">
+        <button type="submit" class="btn">Add comment</button>
+    </form>
+    
+    <br>
+    <h4>Comments:</h4>
+    <br>
+    <% comments.reverse().forEach(c => {%>
+        <div class="comment">
+            <p class="author"><%=c.author%> say's:</p>
+            <i><%=c.content%></i>
+            <br>
+            <a href="/articles/<%=article.id%>/comments/<%=c.id%>/edit"><i class="far fa-edit"></i></a>
+            <a href="/articles/<%=article.id%>/comments/<%=c.id%>/delete"><i class="far fa-trash-alt"></i></a>
+        </div>      
+    <%})%>
+        
+    
+  
+    <br>
+    <!-- <h5><a href="/articles/<%=article.id%>/edit">EDIT</a>   <a href="/articles/<%=article.id%>/delete">DELETE</a></h5> -->
+    <br>
+    <a href="/articles">HOME</a>
+    <a href="/articles/new">Publish new article</a>
+
+   <script src="https://kit.fontawesome.com/7b88d6941e.js" crossorigin="anonymous"></script>
+</body>
+</html>

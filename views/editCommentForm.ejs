@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Comment Form</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+    <h3>Edit Comment</h3>
+    <br>
+    <form action="/articles/<%=article.id%>/comments/<%=comment.id%>" method="POST">
+        <h4>Comment:</h4>
+        <textarea name="content" id="" cols="80" rows="10" ><%=comment.content%></textarea>
+        <br>
+        <h4>Author:</h4>
+        <input  class="inputAuthor" type="text" name="author" value="<%=comment.author%>">
+        <button type="submit" class="btn">Edit comment</button>
+    </form>
+</body>
+</html>
