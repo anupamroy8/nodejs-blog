@@ -97,8 +97,7 @@ router.get("/:id", (req, res, next) => {
 
 
 // Comment router in the end. instead of app.js we are putting comment router here. As no need to access comment without the article.
-
-// router.use("/", commentRouter)
+// router.use("/", commentRouter);
 
 // comments more easier way:
 
@@ -154,7 +153,6 @@ router.get("/:articleid/comments/:commentId/delete", (req, res, next)=>{
     })
   })
 })
-
 
 
 module.exports = router;
