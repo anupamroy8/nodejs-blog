@@ -4,6 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+var session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+var auth = require("./middlewares/auth");
+var flash = require('connect-flash');
+
 
 // connect to db
 mongoose.connect('mongodb://localhost:27017/blog', { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
@@ -14,6 +19,9 @@ mongoose.connect('mongodb://localhost:27017/blog', { useNewUrlParser: true, useU
 // routes
 var indexRouter = require('./routes/index');
 var articlesRouter = require('./routes/articles');
+var commentsRouter = require('./routes/comments');
+var usersRouter = require('./routes/users');
+
 
 var app = express();
 
@@ -27,8 +35,39 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// Session
+app.use(
+  session({
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }
+    )
+  })
+);
+
+// cookie middleware(should be after cookie-parser & session)
+app.use((req, res, next)=>{
+  if(req.cookies.count) {
+    var num = +req.cookies.count;
+    res.cookie("count", num+1);
+  } else {
+    res.cookie("count", 1);
+  }
+  next();
+})
+
+app.use(flash());
+
 app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use(auth.checkUserLogged);
+app.use(auth.UserInfo);
 app.use('/articles', articlesRouter);
+app.use('/comments', commentsRouter);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

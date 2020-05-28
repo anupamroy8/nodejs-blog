@@ -11,8 +11,12 @@ var articleSchema = new Schema({
         required: true,
     },
     author: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref:"User",
         required: true,
+    },
+    image: {
+        type: String,
     },
     likes: {
         type: Number,

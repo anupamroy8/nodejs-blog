@@ -12,18 +12,29 @@
     <a href="/articles">HOME</a>
     <a href="/articles/new">Publish new article</a>
     <br>
+    <a class="left" href="/users/logout">Logout</a>
+    <a class="left2" href="#"><%=locals.user.name%></a>
     <br>
-    <h4 class="edit"><a href="/articles/<%=article.id%>/edit">EDIT</a>   <a href="/articles/<%=article.id%>/delete">DELETE</a></h4>
     <br>
     <h3>Article Title: <span class="bold">"<%=article.title %>"</span></h2> <br>
     <h4>Article Description:</h4>
     <p><span class="bold"><%=article.description %></span></p>
     <br>
-    <h4>Article Author: <span class="bold">"<%=article.author %></span>"</h4> <br>
+    <div class="imgcontainer">
+        <img src="/images/uploads/<%=article.image%>" alt="avatar">
+    </div>
+    
+    <br>
+    <h4>Article Author: <span class="bold">"<%=article.author.name %></span>"</h4> <br>
+    <% if(user._id.toString() === article.author.id.toString()) {%>
     <h4><a href="/articles/<%=article.id%>/edit"><i class="far fa-edit"></i></a>   <a href="/articles/<%=article.id%>/delete"><i class="far fa-trash-alt"></i></a></h4>
+    <% } %>
+    <br>
+    <p><%= user._id.toString()%></p>
+    <p><%= article.author.id.toString()%></p>
     <br>
     <h5>Last updated: <%=article.updatedAt%></h5>
-    <p>Likes:  <span class="bold"> <%=article.likes %> </span> <a href="/articles/<%=article.id%>/like"><i class="far fa-thumbs-up"></i></a>  <a href="/articles/<%=article.id%>/dislike"><i class="far fa-thumbs-down"></i></a></p>
+    <p id="likes">Likes:  <span class="bold"> <%=article.likes %> </span> <a href="/articles/<%=article.id%>/like"><i class="far fa-thumbs-up"></i></a>  <a href="/articles/<%=article.id%>/dislike"><i class="far fa-thumbs-down"></i></a></p>
 
     <span class="bold" >Tags: </span>
     <% article.tags.forEach(a => { %>
@@ -33,27 +44,27 @@
 
     <form action="/articles/<%=article.id%>/comments" method="POST">
         <textarea name="content" id="" cols="80" rows="5" placeholder="Add Comments here.."></textarea>
-        <input  class="inputAuthor" type="text" name="author" placeholder="Add author..">
+        <br><br>
         <button type="submit" class="btn">Add comment</button>
     </form>
     
     <br>
-    <h4>Comments:</h4>
+    <h4 id="comment">Comments:</h4>
     <br>
+
     <% comments.reverse().forEach(c => {%>
         <div class="comment">
-            <p class="author"><%=c.author%> say's:</p>
+            <p class="author"><%=c.author.name%> say's:</p>
             <i><%=c.content%></i>
             <br>
-            <a href="/articles/<%=article.id%>/comments/<%=c.id%>/edit"><i class="far fa-edit"></i></a>
-            <a href="/articles/<%=article.id%>/comments/<%=c.id%>/delete"><i class="far fa-trash-alt"></i></a>
+            <% if(user._id.toString() === c.author.id.toString()) {%>
+            <a href="/comments/<%=c.id%>/edit"><i class="far fa-edit"></i></a>
+            <a href="/comments/<%=c.id%>/delete"><i class="far fa-trash-alt"></i></a>
+            <% } %>
         </div>      
     <%})%>
         
-    
-  
     <br>
-    <!-- <h5><a href="/articles/<%=article.id%>/edit">EDIT</a>   <a href="/articles/<%=article.id%>/delete">DELETE</a></h5> -->
     <br>
     <a href="/articles">HOME</a>
     <a href="/articles/new">Publish new article</a>
